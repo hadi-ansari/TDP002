@@ -116,7 +116,7 @@ def main ():
     month_print(week_day, number_of_days) 
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
 
         
