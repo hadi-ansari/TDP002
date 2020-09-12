@@ -108,15 +108,8 @@ def move_jokers(deck, suit, step):
         new_index = new_index % 27
     deck[1].insert(new_index, card_to_move )
 
-def remove_card(deck, location):
-    card = deck[1][location]
-    deck[1].remove(card)
-
-
-
-
 # ================================================================================
-# top_joker_location(value, suit)
+# top_bottom_joker_location
 # ================================================================================
 def top_bottom_joker_location(deck):
     joker1_location = get_location(deck, 27, 1)
@@ -130,12 +123,16 @@ def top_bottom_joker_location(deck):
 
     return top_joker_location, bottom_joker_location
 
+
 # ================================================================================
-# last_card_location funktionen
+# last_card_location 
 # ================================================================================
+
 def last_card_location(deck):
     location = get_location(deck, get_value(get_bottom_card(deck)), get_suit(get_bottom_card(deck)))
     return location
+
+
 # ================================================================================
 # swap_cba funktionen
 # (A-B-C) -> (C-B-A)
@@ -166,8 +163,6 @@ def bottom_based_cut(deck):
 
     bottom_card = get_bottom_card(deck)
     value = get_value(bottom_card)
-    # print("Bottom card is:\t", end = "")
-    # show_card(bottom_card)
 
     if value != 27:
         last_card = last_card_location(deck)
@@ -233,17 +228,12 @@ def solitaire_keystream(lenght, deck):
     while condition <= lenght:
         move_jokers(deck, 1, -1)
         move_jokers(deck, 2, -2)
-        # print("After moving jokers:")
-        # show_deck(deck)
-        
+                      
         swap_cba(deck)
-        # print("After swap_cba:")
-        # show_deck(deck)
-
+       
 
         bottom_based_cut(deck)
-        # print("After bottom_basec_cut:")
-        # show_deck(deck)
+       
 
         key = find_key(deck)
 
@@ -257,6 +247,7 @@ def solitaire_keystream(lenght, deck):
 # ================================================================================
 # Solitaire_encrypt funktionen
 # ================================================================================
+
 def solitaire_encrypt(unfiltered_message, deck):
     message = ""
     for i in unfiltered_message:
@@ -304,15 +295,42 @@ def solitaire_decrypt(secret, deck):
     decrypted_message = ""
     for i in subtracted_numbers:
         decrypted_message += number_to_letter(i)
-    print(decrypted_message)
+    print("Decrypted message:\t", decrypted_message)
 
+# ================================================================================
+# Main
+# ================================================================================
+def main():
+    while True:
+        selection = int(input("Select one option\n1. Encrypt\n2. Decrypt\n3. Exit\n"))
+        if selection == 1:
+            message = input("Write your message to start encrypting:\t")
+            print()
+            deck = create_deck()
+            encrypted_message = solitaire_encrypt(message, deck)
+        elif selection == 2:
+            message = input("Write your secret message to start decrypting:\t")
+            print()
+            deck = create_deck()
+            encrypted_message = solitaire_decrypt(message, deck)
+        elif selection == 3:
+            break
+        print()
+                
+    
 
 # ================================================================================
 # Huvudprogram
 # ================================================================================
 
-deck1 = create_deck()
-deck2 = create_deck()
-secret_message = solitaire_encrypt("kod3333123f", deck1)
-print("\n\n")
-solitaire_decrypt(secret_message, deck2)
+if __name__ == "__main__":
+    main()
+# deck1 = create_deck()
+# deck2 = create_deck()
+# secret_message = solitaire_encrypt("Python3", deck1)
+# print("\n\n")
+# solitaire_decrypt(secret_message, deck2)
+
+
+
+
