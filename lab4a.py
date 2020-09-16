@@ -37,7 +37,7 @@ def display_board(board):
 def add_wall(board, x, y):
     board.append(["#", x, y])
     
-def add_box(board, x, y):
+def add_crate(board, x, y):
     board.append(["0", x, y])
 
 def create_player(board, x, y):
@@ -58,8 +58,8 @@ def player_can_move(board, x, y, direction):
             target_obj = check_location(board, x, y - 1)
             if target_obj == "#":
                 return False
-            elif target_obj == "0" and crate_can_move(board, x, y - 1, "up"):
-                return True
+            elif target_obj == "0" and crate_can_move(board, x, y - 1, "up") == False:
+                return False
             else:
                 return True
                 
@@ -68,8 +68,8 @@ def player_can_move(board, x, y, direction):
             target_obj = check_location(board, x, y + 1)
             if target_obj == "#":
                 return False
-            elif target_obj == "0" and crate_cat_move(board, x, y + 1, "down"):
-                return True
+            elif target_obj == "0" and crate_can_move(board, x, y + 1, "down") == False:
+                return False
             else:
                 return True
             
@@ -77,17 +77,18 @@ def player_can_move(board, x, y, direction):
             target_obj = check_location(board, x - 1, y)
             if target_obj == "#":
                 return False
-            elif target_obj == "0" and crate_can_move(board, x - 1, y, "left"):
-                return True
+            elif target_obj == "0" and crate_can_move(board, x - 1, y, "left") == False:
+                return False
             else:
                 return True
+            
             
         elif direction == "right":
             target_obj = check_location(board, x + 1, y)
             if target_obj == "#":
                 return False
-            elif target_obj == "0" and crate_can_move(board, x + 1, y, "right"):
-                return True
+            elif target_obj == "0" and crate_can_move(board, x + 1, y, "right") == False:
+                return False
             else:
                 return True
 
@@ -98,25 +99,25 @@ def crate_can_move(board, x, y, direction):
     if obj == "0":
         if direction == "up":
             target_obj = check_location(board, x, y - 1)
-            if target_obj == "Empty":
+            if target_obj != "#" and target_obj != "0":
                 return True
             else:
                 return False
         elif direction == "down":
             target_obj = check_location(board, x, y + 1)
-            if target_obj == "Empty":
+            if target_obj != "#" and target_obj != "0":
                 return True
             else:
                 return False
         elif direction == "left":
             target_obj = check_location(board, x - 1, y)
-            if target_obj == "Empty":
+            if target_obj != "#" and target_obj != "0":
                 return True
             else:
                 return False
         elif direction == "right":
             target_obj = check_location(board, x + 1, y)
-            if target_obj == "Empty":
+            if target_obj != "#" and target_obj != "0":
                 return True
             else:
                 return False
@@ -126,7 +127,6 @@ def crate_can_move(board, x, y, direction):
 def move_object(board, x, y, direction):
     obj = check_location(board, x, y)
     
-    print("Objektet är:\t", obj)
     if obj == "@" and player_can_move(board, x, y, direction):
         if direction == "up":
             move_object(board, x , y - 1, "up")
@@ -164,7 +164,10 @@ def move_object(board, x, y, direction):
             board.remove(["0", x, y])
             
 
-#def get_position(board,)
+def get_player_xy(board):
+    for i in range(len(board)):
+        if board[i][0] == "@" or board[i][0] == "+":
+            return board[i][1], board[i][2]
 
     
 # ======================================================================
@@ -195,27 +198,35 @@ add_wall(board, 3, 4)
 add_wall(board, 4, 4)
 
 
-create_player(board, 1, 3)
-add_box(board, 2, 3)
-add_box(board, 1, 2)
+create_player(board, 3, 2)
+add_crate(board, 1, 3)
+add_crate(board, 1, 2)
+add_crate(board, 3, 1)
+add_crate(board, 4, 2)
 
 
 while True:
+    player_x, player_y = get_player_xy(board)
+    print("Lagerarbetarens location:\t(x = {0},y = {1})".format(player_x, player_y))
     display_board(board)
     direction = input()
     if direction == "w":
         print("Möjligt att flytta lagerarbetaren uppåt?", end = " ")
-        print(player_can_move(board, 1, 3, "up"))
-        move_object(board, 1, 3, "up")
+        print(player_can_move(board, player_x, player_y, "up"))
+        move_object(board, player_x, player_y, "up")
+        
     elif direction == "s":
         print("Möjligt att flytta lagerarbetaren nedåt?", end = " ")
-        print(player_can_move(board, 1, 3, "down"))
+        print(player_can_move(board, player_x, player_y, "down"))
+        move_object(board, player_x, player_y, "down")
+        
     elif direction == "a":
         print("Möjligt att flytta lagerarbetaren till vänster?", end = " ")
-        print(player_can_move(board, 1, 3, "left"))
+        print(player_can_move(board, player_x, player_y, "left"))
+        move_object(board, player_x, player_y, "left")
+        
     elif direction == "d":
         print("Möjligt att flytta lagerarbetaren till höger?", end = " ")
-        print(player_can_move(board, 1, 3, "right"))
-        move_object(board, 1, 3, "right")
-        print(board)
-  
+        print(player_can_move(board, player_x, player_y, "right"))
+        move_object(board, player_x, player_y, "right")
+
