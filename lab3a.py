@@ -99,7 +99,7 @@ def shuffle_cards(deck, key):
     random.shuffle(deck[1])
 
 # step kan vara plus eller minus beroende på om man vill flytta kortet  neråt eller uppåt. Minus för neråt och plus för uppåt
-def move_jokers(deck, suit, step):
+def move_card(deck, suit, step):
     current_index = get_location(deck, 27, suit) - 1
     card_to_move = deck[1][current_index]
     deck[1].remove(card_to_move)
@@ -226,8 +226,8 @@ def solitaire_keystream(lenght, deck):
 
     condition = 1
     while condition <= lenght:
-        move_jokers(deck, 1, -1)
-        move_jokers(deck, 2, -2)
+        move_card(deck, 1, -1)
+        move_card(deck, 2, -2)
                       
         swap_cba(deck)
        

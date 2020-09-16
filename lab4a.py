@@ -38,7 +38,7 @@ def add_wall(board, x, y):
     board.append(["#", x, y])
     
 def add_box(board, x, y):
-    board.append(["o", x, y])
+    board.append(["0", x, y])
 
 def create_player(board, x, y):
     board.append(["@", x, y])
@@ -50,78 +50,119 @@ def check_location(board, x, y):
     
     return "Empty"
 
-def move_object(board, x, y, direction):
+def player_can_move(board, x, y, direction):
     obj = check_location(board, x, y)
-
+    
     if obj == "@":
         if direction == "up":
             target_obj = check_location(board, x, y - 1)
-            if target_obj == "Empty":
-                board.append(["@", x , y - 1])
-                board.remove(["@", x, y])
-            elif target_obj == "0":
-                target_obj2 = check_location(board, x, y - 2)
-                if target_obj2 == "Empty":
-                    board.append(["@", x , y - 1])
-                    board.remove(["@", x, y])
-
-                    board.append(["0", x , y - 2])
-                    board.remove(["0", x, y - 1])
-                elif target_obj2 == ".":
-                    board.append(["@", x , y - 1])
-                    board.remove(["@", x, y])
-
-                    board.append(["*", x , y - 2])
-                    board.remove(["o", x, y - 1])
-            elif target_obj == ".":
-                board.append(["+", x , y - 1])
-                board.remove(["@", x, y])                
-                    
+            if target_obj == "#":
+                return False
+            elif target_obj == "0" and crate_can_move(board, x, y - 1, "up"):
+                return True
+            else:
+                return True
                 
-                
+        
         elif direction == "down":
             target_obj = check_location(board, x, y + 1)
-            if target_obj == "Empty":
-                board.append(["@", x, y + 1])
-                board.remove(["@", x, y])
-
-        elif direction == "right":
-            target_obj = check_location(board, x + 1, y)
-            if target_obj == "Empty":
-                board.append(["@", x + 1, y])
-                board.remove(["@", x, y])
-                
+            if target_obj == "#":
+                return False
+            elif target_obj == "0" and crate_cat_move(board, x, y + 1, "down"):
+                return True
+            else:
+                return True
+            
         elif direction == "left":
             target_obj = check_location(board, x - 1, y)
-            if target_obj == "Empty":
-                board.append(["@", x - 1, y])
-                board.remove(["@", x, y])
-                    
-                
-    elif obj == "o":
+            if target_obj == "#":
+                return False
+            elif target_obj == "0" and crate_can_move(board, x - 1, y, "left"):
+                return True
+            else:
+                return True
+            
+        elif direction == "right":
+            target_obj = check_location(board, x + 1, y)
+            if target_obj == "#":
+                return False
+            elif target_obj == "0" and crate_can_move(board, x + 1, y, "right"):
+                return True
+            else:
+                return True
+
+        
+def crate_can_move(board, x, y, direction):
+    obj = check_location(board, x, y)
+    
+    if obj == "0":
         if direction == "up":
             target_obj = check_location(board, x, y - 1)
             if target_obj == "Empty":
-                board.append(["@", x , y - 1])
-                board.remove(["@", x, y])
-                
+                return True
+            else:
+                return False
         elif direction == "down":
             target_obj = check_location(board, x, y + 1)
             if target_obj == "Empty":
-                board.append(["@", x, y + 1])
-                board.remove(["@", x, y])
-
-        elif direction == "right":
-            target_obj = check_location(board, x + 1, y)
-            if target_obj == "Empty":
-                board.append(["@", x + 1, y])
-                board.remove(["@", x, y])
-                
+                return True
+            else:
+                return False
         elif direction == "left":
             target_obj = check_location(board, x - 1, y)
             if target_obj == "Empty":
-                board.append(["@", x - 1, y])
-                board.remove(["@", x, y])
+                return True
+            else:
+                return False
+        elif direction == "right":
+            target_obj = check_location(board, x + 1, y)
+            if target_obj == "Empty":
+                return True
+            else:
+                return False
+            
+
+    
+def move_object(board, x, y, direction):
+    obj = check_location(board, x, y)
+    
+    print("Objektet är:\t", obj)
+    if obj == "@" and player_can_move(board, x, y, direction):
+        if direction == "up":
+            move_object(board, x , y - 1, "up")
+            board.append(["@", x , y - 1])
+            board.remove(["@", x, y])
+                    
+        elif direction == "down":
+            move_object(board, x, y + 1, "down")
+            board.append(["@", x, y + 1])
+            board.remove(["@", x, y])
+
+        elif direction == "right":
+            move_object(board, x + 1, y , "right")
+            board.append(["@", x + 1, y])
+            board.remove(["@", x, y])
+                
+        elif direction == "left":
+            move_object(board, x - 1, y , "left")
+            board.append(["@", x - 1, y])
+            board.remove(["@", x, y])
+                    
+                
+    elif obj == "0" and crate_can_move(board, x, y, direction):
+        if direction == "up":
+            board.append(["0", x , y - 1])
+            board.remove(["0", x, y])
+        elif direction == "down":
+            board.append(["0", x , y + 1])
+            board.remove(["0", x, y])
+        elif direction == "right":
+            board.append(["0", x + 1, y])
+            board.remove(["0", x, y])
+        elif direction == "left":
+            board.append(["0", x - 1, y])
+            board.remove(["0", x, y])
+            
 
 #def get_position(board,)
 
@@ -154,16 +195,27 @@ add_wall(board, 3, 4)
 add_wall(board, 4, 4)
 
 
-create_player(board, 2, 3)
-add_box(board, 2, 2)
-display_board(board)
+create_player(board, 1, 3)
+add_box(board, 2, 3)
+add_box(board, 1, 2)
 
 
-move_object(board, 2, 3, "up")
-display_board(board)
-
-
-
-
-
-
+while True:
+    display_board(board)
+    direction = input()
+    if direction == "w":
+        print("Möjligt att flytta lagerarbetaren uppåt?", end = " ")
+        print(player_can_move(board, 1, 3, "up"))
+        move_object(board, 1, 3, "up")
+    elif direction == "s":
+        print("Möjligt att flytta lagerarbetaren nedåt?", end = " ")
+        print(player_can_move(board, 1, 3, "down"))
+    elif direction == "a":
+        print("Möjligt att flytta lagerarbetaren till vänster?", end = " ")
+        print(player_can_move(board, 1, 3, "left"))
+    elif direction == "d":
+        print("Möjligt att flytta lagerarbetaren till höger?", end = " ")
+        print(player_can_move(board, 1, 3, "right"))
+        move_object(board, 1, 3, "right")
+        print(board)
+  
