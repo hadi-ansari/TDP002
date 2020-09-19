@@ -246,30 +246,28 @@ display_board(board)
 # add_crate(board, 3, 2)
 # add_storage(board, 1, 2)
 
-# while True:
-#     player_x, player_y = get_player_xy(board)
-#     print("Lagerarbetarens position:\t(x = {0},y = {1})".format(player_x, player_y))
-#     upgrade_board(board)
-#     display_board(board)
-#     direction = input()
-#     if direction == "w":
-#         print("Möjligt att flytta lagerarbetaren uppåt?", end = " ")
-#         print(player_can_move(board, player_x, player_y, "up"))
-#         move_object(board, player_x, player_y, "up")
+while True:
+    player_x, player_y = get_player_xy(board)
+    print("Lagerarbetarens position:\t(x = {0},y = {1})".format(player_x, player_y))
+    display_board(board)
+    direction = input()
+    if direction == "w":
+        print("Möjligt att flytta lagerarbetaren uppåt?", end = " ")
+        print(player_can_move(board, player_x, player_y, "up"))
+        move_object(board, player_x, player_y, "up")
         
-#     elif direction == "s":
-#         print("Möjligt att flytta lagerarbetaren nedåt?", end = " ")
-#         print(player_can_move(board, player_x, player_y, "down"))
-#         move_object(board, player_x, player_y, "down")
+    elif direction == "s":
+        print("Möjligt att flytta lagerarbetaren nedåt?", end = " ")
+        print(player_can_move(board, player_x, player_y, "down"))
+        move_object(board, player_x, player_y, "down")
         
-#     elif direction == "a":
-#         print("Möjligt att flytta lagerarbetaren till vänster?", end = " ")
-#         print(player_can_move(board, player_x, player_y, "left"))
-#         move_object(board, player_x, player_y, "left")
+    elif direction == "a":
+        print("Möjligt att flytta lagerarbetaren till vänster?", end = " ")
+        print(player_can_move(board, player_x, player_y, "left"))
+        move_object(board, player_x, player_y, "left")
 
-#         print(board)
-#     elif direction == "d":
-#         print("Möjligt att flytta lagerarbetaren till höger?", end = " ")
-#         print(player_can_move(board, player_x, player_y, "right"))
-#         move_object(board, player_x, player_y, "right")
+    elif direction == "d":
+        print("Möjligt att flytta lagerarbetaren till höger?", end = " ")
+        print(player_can_move(board, player_x, player_y, "right"))
+        move_object(board, player_x, player_y, "right")
 
