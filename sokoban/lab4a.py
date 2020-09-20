@@ -1,19 +1,15 @@
 #! /usr/bin/env python3
 import os
 from os import listdir
-import sys
 
 def create_board():
     board = []
     return board
-def check_level_files():
-    return 0
+
 def load_board(doc):
     board = create_board()
     os.chdir("levels")
     with open(doc, "r") as f:
-      
-        
         current_x = 0
         current_y = 0
         for line in f:
@@ -290,6 +286,7 @@ def next_symbol(board, x, y, direction):
             return "*"
         else:
             return "o"
+        
 def is_over(board):
     for i in range(len(board)):
         if board[i][0] == "o":
@@ -297,19 +294,29 @@ def is_over(board):
     return True
 
 def main():
+    print("="*50)
+    print("Välkommen till Sokoban!")
+    print("="*50)
+    print("Välj en nivå:\n")
     levels = sorted(os.listdir("levels"))
+
     for i in range (len(levels)):
-        print(levels[i])
-    select = int(input("Välj en nivå: "))
-    board = load_board(levels[select-1])
+        print(i + 1, levels[i])
+    select = int(input("\nDitt val: \t"))
+    selected_level = levels[select - 1]
+    board = load_board(selected_level)
    
 
     while True:
-        print("För att flytta lagerarbetaren uppåt (w), nedåt (s), till höger (d), vänster (a)")
+        os.system("clear")
+        print("="*80)
+        print(selected_level)
+        print("="*80)
+        print("För att flytta lagerarbetaren: uppåt (w) nedåt (s) till höger (d) till vänster (a)\n")
         player_x, player_y = get_player_xy(board)
         display_board(board)
         if is_over(board):
-            print("Du har vunnit!!!!!!!!!!!!!!!!")
+            print("\nGrattis, Du slutförde nivå", selected_level, "!\n")
             break
         direction = input()
         if direction == "w":
@@ -323,7 +330,7 @@ def main():
 
         elif direction == "d":
             move_object(board, player_x, player_y, "right")
-        os.system("clear")
+        
     
 # ======================================================================
 # Huvudprogram
