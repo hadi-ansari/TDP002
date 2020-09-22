@@ -25,7 +25,8 @@ print()
 
 
 print("Matchade giltiga datum:")
-valid_date_list = re.findall(r"\d{4}-[0-1]\d-[0-3]\d", content)
+valid_date_list = re.findall(r"\d{4}-(?:0\d|1[0-2])-(?:[0-2]\d|3[0-1])", content)
 print(valid_date_list)
-print()
+
+
 f.close()
