@@ -1,0 +1,20 @@
+#BEGIN COPYRIGHT
+
+
+
+
+#END COPYRIGHT
+
+
+
+print("Hello World")
+
+
+
+
+#BEGIN COPYRIGHT
+
+
+
+
+#END COPYRIGHT
