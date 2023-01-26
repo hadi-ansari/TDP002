@@ -1,1 +1,2 @@
-Jag behåller/utvecklar mina personliga python test koder i denna projekt
+# Python repository
+This is a repository for the python assignments in the course TDP002.
